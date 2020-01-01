@@ -117,7 +117,7 @@ router.post('/', (req, res) => {
       //   res.json(err);
       // }else{
         // console.log('>>>>', req.file);
-        console.log("going here, success???? =====>", req.files[0])
+        console.log("going here, success???? =====>", req.files)
         const createdPost = await House.create({
           // productImage: `public/uploads/${req.file.filename}`,
 
