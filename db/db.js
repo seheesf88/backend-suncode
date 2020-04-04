@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const connectionString = 'mongodb://localhost/energy'
+const URI = 'mongodb+srv://houseadmin:houseadmin1@cluster0-vjphq.mongodb.net/test?retryWrites=true&w=majority'
 
-mongoose.connect(process.env.MONGODB_URI || connectionString, {
+mongoose.connect( URI || process.env.MONGODB_URI || connectionString, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false
