@@ -64,9 +64,10 @@ router.get('/', async(req, res) => {
 });
 
 //one house
-router.get('/:id', async(req, res) => {
+router.get('/:id', async(req, res) =>{
   try{
-    const foundHouse = await House.findById(req.params.id)
+    const foundUser = await User.findById(req.params.id);
+    const foundHouse = await House.findOne({userId: req.params.id})
     res.json({
       status: 200,
       data: foundHouse
@@ -133,7 +134,7 @@ router.post('/', (req, res) => {
 
         // createdPost.userId = req.session.userId;
         createdPost.address = req.body.address;
-        createdPost.address2 = req.body.address2;
+        createdPost.city = req.body.city;
         createdPost.state = req.body.state;
         createdPost.zipcode = req.body.zipcode;
         createdPost.year = req.body.year;
@@ -143,14 +144,12 @@ router.post('/', (req, res) => {
         createdPost.username = req.body.username;
         createdPost.postingTime = req.body.postingTime;
 
-        console.log('2222');
         createdPost.save((err, savedPost) => {
           res.json({
             msg: 'file uploaded',
             newPost: savedPost,
           });
         });
-      // }
     }
   });
 });
@@ -160,9 +159,12 @@ router.post('/', (req, res) => {
 //house edit
 router.put('/:id', async(req, res) => {
   try{
-    console.log('req.params.id/put function ===> ',req.params.id);
-    console.log('req.params.id/put function ===> ',req.body);
-    const updatedHouse = await House.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    // console.log('req.params.id/put function ===> ',req.params.id);
+    // console.log('req.params.id/put function ===> ',req.body);
+    const foundUser = await User.findById(req.params.id);
+    const foundHouse = await House.findOne({userId: req.params.id})
+    console.log('foundhouse', foundHouse);
+    const updatedHouse = await House.findByIdAndUpdate(foundHouse._id, req.body, {new: true});
     res.json({
       status: 200,
       data: updatedHouse

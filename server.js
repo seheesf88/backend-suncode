@@ -39,8 +39,7 @@ const houseController = require('./controllers/houseController');
 app.use('/api/v1/auth', authController);
 app.use('/api/v1/users', userController);
 app.use('/api/v1/house', houseController);
-// app.use('/api/v1/photo', photoController);
-// app.use('/api/v1/post', postController);
+
 
 
 app.listen(process.env.PORT || 9000, () => {
