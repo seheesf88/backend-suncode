@@ -3,14 +3,45 @@ const router  = express.Router();
 //*************** photo ****************
 const mongoose = require('mongoose');
 const multer = require('multer');
+const GridFsStorage = require('multer-gridfs-storage');
+var crypto = require('crypto')
 const path = require('path');
-const storage = multer.diskStorage({
-  destination: './public/uploads/',
-  filename: function (req, file, cb) {
-    console.log('what is file??', file);
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
-});
+const URI = 'mongodb+srv://houseadmin:houseadmin1@cluster0-vjphq.mongodb.net/test?retryWrites=true&w=majority'
+
+
+
+// const storage = multer.diskStorage({
+//   destination: './public/uploads/',
+//   filename: function (req, file, cb) {
+//     console.log('what is file??', file);
+//     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+//   }
+// });
+
+
+
+const storage = new GridFsStorage({
+  url: URI,
+  file: (req, file) => {
+      return new Promise((resolve, reject) => {
+        crypto.randomBytes(16, (err, buf) => {
+          if (err) {
+            console.log('storage err');
+            return reject(err)
+          }
+          const filename = file.originalname
+          console.log('filename', filename);
+          const fileInfo = {
+            filename: filename,
+            bucketName: 'uploads',
+          }
+          resolve(fileInfo)
+        })
+      })
+    },
+})
+
+
 
 const upload = multer({
   storage: storage,
@@ -25,17 +56,13 @@ const upload = multer({
 function checkFileType(file, cb) { // checks file type,
   //allowed extensions
   const filetypes = /jpeg|jpg|png|gif/;
-
   //check ext
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-
   // check mime type
   const mimetype = filetypes.test(file.mimetype);
-
+  console.log('hihihihi');
   if (mimetype && extname) {
-
     return cb(null, true);
-
   } else {
     cb('Error: Images only!');
   }
@@ -61,78 +88,44 @@ router.get('/', async(req, res) => {
   }catch(err){
       res.send(err)
   }
+
 });
 
 //one house
 router.get('/:id', async(req, res) =>{
   try{
     const foundUser = await User.findById(req.params.id);
-    const foundHouse = await House.findOne({userId: req.params.id})
+    const foundHouse = await House.findOne({userId: req.params.id});
     res.json({
       status: 200,
       data: foundHouse
     })
   }catch(err){
+    console.log('house_one_get_err', err);
     res.send(err)
   }
+
 });
 
-// //create house
-// router.post('/', async(req, response) => {
-//   // console.log(`Report Create: ${req.body}`)
-//   console.log(req.body);
-//
-//   try{
-//     const createdHouse = await House.create(req.body);
-//     console.log('what is req.session? in house?', req.session);
-//     console.log('session id in house?', req.session.userId);
-//     createdHouse.authorId = req.session.userId;
-//     createdHouse.authorname = req.session.username;
-//     // console.log(`Created Report: ${createdReport}`);
-//     // console.log('createdReport=>', typeof(createdReport));
-//     console.log('createdHouse', createdHouse);
-//     createdHouse.save((err, savedHouse) => {
-//       response.json({
-//         status: 200,
-//         data: savedHouse,
-//       })
-//     })
-//     // console.log('here?');
-//   }catch(err){
-//     console.log('error????_?');
-//     response.send(err)
-//   }
-// });
-
-
 router.post('/', (req, res) => {
-  console.log("is it going here?")
   upload(req, res,  async (err) => {
     if (err){
-        console.log(" other error", err)
+        console.log("route.post - error", err)
         res.json(err);
     }else{
-      // console.log('what is req.files? ===>', req.files);
-      // if(req.file == undefined){ // typeof req.file === 'undefined', check if there is actually an image uploaded
-      //   console.log("udefined error")
-      //   res.json(err);
-      // }else{
-        // console.log('>>>>', req.file);
-        console.log("going here, success???? =====>", req.files)
+      console.log(req.files[0]);
         const createdPost = await House.create({
-          // productImage: `public/uploads/${req.file.filename}`,
+          productImage1: `${req.files[0].filename}`,
+          productImage2: `${req.files[0].filename}`,
+          productImage3: `${req.files[0].filename}`,
+          productImage4: `${req.files[0].filename}`,
+          // productImage1: `public/uploads/${req.files[0].filename}`,
+          // productImage2: `public/uploads/${req.files[1].filename}`,
+          // productImage3: `public/uploads/${req.files[2].filename}`,
+          // productImage4: `public/uploads/${req.files[3].filename}`
 
-          // array?
-          productImage1: `public/uploads/${req.files[0].filename}`,
-          productImage2: `public/uploads/${req.files[1].filename}`,
-          productImage3: `public/uploads/${req.files[2].filename}`,
-          productImage4: `public/uploads/${req.files[3].filename}`
-
-          // productImage1: `public/uploads/${req.file.filename}`,
-          // productImage2: `public/uploads/${req.file.filename}`,
         });
 
-        // createdPost.userId = req.session.userId;
         createdPost.address = req.body.address;
         createdPost.city = req.body.city;
         createdPost.state = req.body.state;
@@ -159,8 +152,6 @@ router.post('/', (req, res) => {
 //house edit
 router.put('/:id', async(req, res) => {
   try{
-    // console.log('req.params.id/put function ===> ',req.params.id);
-    // console.log('req.params.id/put function ===> ',req.body);
     const foundUser = await User.findById(req.params.id);
     const foundHouse = await House.findOne({userId: req.params.id})
     console.log('foundhouse', foundHouse);
