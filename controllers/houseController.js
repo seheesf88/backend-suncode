@@ -3,45 +3,52 @@ const router  = express.Router();
 //*************** photo ****************
 const mongoose = require('mongoose');
 const multer = require('multer');
-const GridFsStorage = require('multer-gridfs-storage');
-var crypto = require('crypto')
 const path = require('path');
+
+// const crypto = require('crypto')
+// const GridFsStorage = require('multer-gridfs-storage');
+// const Grid = require('gridfs-stream');
 const URI = 'mongodb+srv://houseadmin:houseadmin1@cluster0-vjphq.mongodb.net/test?retryWrites=true&w=majority'
+//create mongo connection
+// const conn = mongoose.createConnection(URI)
+// let gfs
+//
+// conn.once('open', () => {
+//   gfs = Grid(conn.db, mongoose.mongo)
+//   gfs.collection('uploads')
+//   console.log('Connection Successful')
+// })
 
 
+// const storage = new GridFsStorage({
+//   url: URI,
+//   file: (req, file) => {
+//       return new Promise((resolve, reject) => {
+//         crypto.randomBytes(16, (err, buf) => {
+//           if (err) {
+//
+//             return reject(err)
+//           }
+//           const filename = file.originalname
+//           const fileInfo = {
+//             filename: filename,
+//             bucketName: 'uploads',
+//           }
+//           resolve(fileInfo)
+//         })
+//       })
+//     },
+// })
 
-// const storage = multer.diskStorage({
-//   destination: './public/uploads/',
-//   filename: function (req, file, cb) {
-//     console.log('what is file??', file);
-//     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-//   }
-// });
+// const upload = multer({storage});
 
-
-
-const storage = new GridFsStorage({
-  url: URI,
-  file: (req, file) => {
-      return new Promise((resolve, reject) => {
-        crypto.randomBytes(16, (err, buf) => {
-          if (err) {
-            console.log('storage err');
-            return reject(err)
-          }
-          const filename = file.originalname
-          console.log('filename', filename);
-          const fileInfo = {
-            filename: filename,
-            bucketName: 'uploads',
-          }
-          resolve(fileInfo)
-        })
-      })
-    },
-})
-
-
+const storage = multer.diskStorage({
+  destination: './public/uploads/',
+  filename: function (req, file, cb) {
+    // console.log('what is file??', file);
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
 
 const upload = multer({
   storage: storage,
@@ -96,10 +103,13 @@ router.get('/:id', async(req, res) =>{
   try{
     const foundUser = await User.findById(req.params.id);
     const foundHouse = await House.findOne({userId: req.params.id});
+
     res.json({
       status: 200,
-      data: foundHouse
+      data: foundHouse,
     })
+
+
   }catch(err){
     console.log('house_one_get_err', err);
     res.send(err)
@@ -113,16 +123,12 @@ router.post('/', (req, res) => {
         console.log("route.post - error", err)
         res.json(err);
     }else{
-      console.log(req.files[0]);
+      // console.log(req.files[0]);
         const createdPost = await House.create({
-          productImage1: `${req.files[0].filename}`,
-          productImage2: `${req.files[0].filename}`,
-          productImage3: `${req.files[0].filename}`,
-          productImage4: `${req.files[0].filename}`,
-          // productImage1: `public/uploads/${req.files[0].filename}`,
-          // productImage2: `public/uploads/${req.files[1].filename}`,
-          // productImage3: `public/uploads/${req.files[2].filename}`,
-          // productImage4: `public/uploads/${req.files[3].filename}`
+          productImage1: `public/uploads/${req.files[0].filename}`,
+          productImage2: `public/uploads/${req.files[1].filename}`,
+          productImage3: `public/uploads/${req.files[2].filename}`,
+          productImage4: `public/uploads/${req.files[3].filename}`
 
         });
 
@@ -146,6 +152,46 @@ router.post('/', (req, res) => {
     }
   });
 });
+
+// router.post('/', (req, res) => {
+//   upload(req, res,  async (err) => {
+//     if (err){
+//         console.log("route.post - error", err)
+//         res.json(err);
+//     }else{
+//       console.log(req.files[0]);
+//         const createdPost = await House.create({
+//           productImage1: `${req.files[0].filename}`,
+//           productImage2: `${req.files[0].filename}`,
+//           productImage3: `${req.files[0].filename}`,
+//           productImage4: `${req.files[0].filename}`,
+//           // productImage1: `public/uploads/${req.files[0].filename}`,
+//           // productImage2: `public/uploads/${req.files[1].filename}`,
+//           // productImage3: `public/uploads/${req.files[2].filename}`,
+//           // productImage4: `public/uploads/${req.files[3].filename}`
+//
+//         });
+//
+//         createdPost.address = req.body.address;
+//         createdPost.city = req.body.city;
+//         createdPost.state = req.body.state;
+//         createdPost.zipcode = req.body.zipcode;
+//         createdPost.year = req.body.year;
+//         createdPost.sqft = req.body.sqft;
+//         createdPost.memo = req.body.memo;
+//         createdPost.userId = req.body.userId;
+//         createdPost.username = req.body.username;
+//         createdPost.postingTime = req.body.postingTime;
+//
+//         createdPost.save((err, savedPost) => {
+//           res.json({
+//             msg: 'file uploaded',
+//             newPost: savedPost,
+//           });
+//         });
+//     }
+//   });
+// });
 
 
 

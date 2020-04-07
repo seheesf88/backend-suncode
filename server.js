@@ -3,7 +3,7 @@ const app     = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
-const multer = require('multer')
+// const multer = require('multer')
 require('./db/db');
 
 app.use(session({
