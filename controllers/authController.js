@@ -26,13 +26,13 @@ router.get('/:id', async(req, res) => {
 
 //create account
 router.post('/', async(req, res) => {
-  console.log('signup post request 1 :', req.body);
+
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
-  console.log('how about here????');
+
   const hashedPassword = await bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-console.log('but not herer?');
+
   const name = req.body.name;
 
   const UserDbEntry = {};
@@ -41,7 +41,6 @@ console.log('but not herer?');
         UserDbEntry.password  = hashedPassword;
         UserDbEntry.name      = name;
 
-  console.log('before promises?');
 
   try {
     console.log('in sideof try 2: ', req.session);
@@ -59,7 +58,7 @@ console.log('but not herer?');
       username: req.body.username
     })
   }catch(err){
-    console.log('here?');
+  
     res.send(err)
   }
 });

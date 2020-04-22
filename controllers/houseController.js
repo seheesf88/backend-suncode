@@ -118,12 +118,13 @@ router.get('/:id', async(req, res) =>{
 });
 
 router.post('/', (req, res) => {
+
   upload(req, res,  async (err) => {
     if (err){
         console.log("route.post - error", err)
         res.json(err);
     }else{
-      // console.log(req.files[0]);
+      console.log(req.files[0]);
         const createdPost = await House.create({
           productImage1: `public/uploads/${req.files[0].filename}`,
           productImage2: `public/uploads/${req.files[1].filename}`,
