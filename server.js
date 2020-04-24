@@ -32,6 +32,7 @@ app.use('/public', express.static('public'));
 const authController = require('./controllers/authController');
 const userController = require('./controllers/userController');
 const houseController = require('./controllers/houseController');
+const roofController = require('./controllers/roofController');
 // const photoController = require('./controllers/photoController');
 // const postController = require('./controllers/postController');
 
@@ -39,6 +40,7 @@ const houseController = require('./controllers/houseController');
 app.use('/api/v1/auth', authController);
 app.use('/api/v1/users', userController);
 app.use('/api/v1/house', houseController);
+app.use('/api/v1/roof', roofController);
 
 
 

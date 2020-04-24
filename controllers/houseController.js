@@ -67,7 +67,7 @@ function checkFileType(file, cb) { // checks file type,
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   // check mime type
   const mimetype = filetypes.test(file.mimetype);
-  console.log('hihihihi');
+
   if (mimetype && extname) {
     return cb(null, true);
   } else {
@@ -124,7 +124,7 @@ router.post('/', (req, res) => {
         console.log("route.post - error", err)
         res.json(err);
     }else{
-      console.log(req.files[0]);
+
         const createdPost = await House.create({
           productImage1: `public/uploads/${req.files[0].filename}`,
           productImage2: `public/uploads/${req.files[1].filename}`,
@@ -132,11 +132,12 @@ router.post('/', (req, res) => {
           productImage4: `public/uploads/${req.files[3].filename}`
 
         });
-
+        //myCasa 01
         createdPost.address = req.body.address;
         createdPost.city = req.body.city;
         createdPost.state = req.body.state;
         createdPost.zipcode = req.body.zipcode;
+
         createdPost.year = req.body.year;
         createdPost.sqft = req.body.sqft;
         createdPost.memo = req.body.memo;
@@ -221,6 +222,7 @@ router.delete('/:id', async(req, res) => {
       status: 200,
       data: deletedHouse
     })
+
   }catch(err){
     res.send(err)
   }
