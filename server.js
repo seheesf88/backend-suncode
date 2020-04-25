@@ -33,14 +33,18 @@ const authController = require('./controllers/authController');
 const userController = require('./controllers/userController');
 const houseController = require('./controllers/houseController');
 const roofController = require('./controllers/roofController');
-// const photoController = require('./controllers/photoController');
-// const postController = require('./controllers/postController');
+const atticController = require('./controllers/atticController');
+const waheaterController = require('./controllers/waheaterController');
+const spheaterController = require('./controllers/spheaterController');
 
 
 app.use('/api/v1/auth', authController);
 app.use('/api/v1/users', userController);
 app.use('/api/v1/house', houseController);
 app.use('/api/v1/roof', roofController);
+app.use('/api/v1/attic', atticController);
+app.use('/api/v1/waheater', waheaterController);
+app.use('/api/v1/spheater', spheaterController);
 
 
 

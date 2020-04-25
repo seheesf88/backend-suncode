@@ -11,7 +11,7 @@ router.get('/', async(req, res) => {
   })
 })
 
-//get one user
+//get one user - for admin - users/:id is same as this
 router.get('/:id', async(req, res) => {
   try{
     const foundUser = await User.findById(req.params.id)
@@ -27,55 +27,62 @@ router.get('/:id', async(req, res) => {
 //create account
 router.post('/', async(req, res) => {
 
-  const username = req.body.username;
   const email = req.body.email;
+
+  const checkUser = await User.findOne({email: req.body.email})
+
+  if(checkUser){
+    console.log('this email is already registered')
+  }else{
+  //check if this email is already registered
   const password = req.body.password;
-
   const hashedPassword = await bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-
-  const name = req.body.name;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const phNumber = req.body.phNumber
 
   const UserDbEntry = {};
-        UserDbEntry.username  = username;
         UserDbEntry.email     = email;
         UserDbEntry.password  = hashedPassword;
-        UserDbEntry.name      = name;
-
+        UserDbEntry.firstName = firstName;
+        UserDbEntry.lastName  = lastName;
+        UserDbEntry.phNumber  = phNumber;
 
   try {
-    console.log('in sideof try 2: ', req.session);
-    // console.log('userdb', UserDbEntry);
     const user = await User.create(UserDbEntry);
-    // console.log('2', user);
     req.session.logged = true;
-    req.session.username = req.body.username;
+    // req.session.username = req.body.username;
     req.session.userId = user._id;
-    // console.log('3', req.session); // userid is saved..
+
     res.json({
       status: 200,
       data: 'register successful',
       userId: user._id,
-      username: req.body.username
-    })
+
+      })
+
   }catch(err){
-  
+
     res.send(err)
   }
+
+}
 });
 
 
 
 router.put('/:id', async(req, res) => {
   try{
-    // console.log('1', req.body);
     const password = req.body.password;
     const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-    // console.log('2');
+
     const modifyProfile = {};
           modifyProfile.password = hashedPassword;
-          modifyProfile.username = req.body.username;
+          modifyProfile.firstName = req.body.firstName;
+          modifyProfile.lastName = req.body.lastName;
           modifyProfile.email = req.body.email;
-    // console.log('modifiyProfile', modifyProfile);
+          modifyProfile.phNumber = req.body.phNumber;
+
     const updatedUser = await User.findByIdAndUpdate(req.params.id, modifyProfile, {new:true})
     res.json({
       status: 200,
@@ -107,26 +114,22 @@ router.delete('/:id', async(req, res) => {
 
 router.post('/login', async(req, res) => {
   try{
-    console.log('1?', req.body);
-    // const foundUser = await User.findOne({username: req.body.username})
-    const foundUser = await User.findOne({username: req.body.username})
+    const foundUser = await User.findOne({email: req.body.email})
     // .catch((err) => console.log('caught it'));
-  console.log('foundUser', foundUser);
-    // const foundUser = await User.findOne({email: req.body.email})
-    console.log('2?', foundUser);
+
     if(foundUser){
       const passwordMatches = bcrypt.compareSync(req.body.password, foundUser.password);
-      // console.log("passwordMatches", (bcrypt.compareSync(req.body.password, foundUser.password)));
+
       // if(bcrypt.compareSync(req.body.password, foundUser.password)){
       console.log('3');
       if(passwordMatches){
         req.session.message = '';
         req.session.logged = true;
-        req.session.username = foundUser.username;
+        //req.session.username = foundUser.username;
         // console.log('foundUser.username', foundUser.username);
-        console.log('what is foundUser._id?', foundUser._id);//it works...
+
         req.session.userId = foundUser._id;
-        console.log('req.session.userId in login', req.session);//it is working...
+
         res.json({
           status:200,
           data: 'login successful',
@@ -157,7 +160,7 @@ router.post('/login', async(req, res) => {
 
 //logout get??
 router.get('/logout', (req, res) => {
-  console.log('hi?');
+  console.log(req.session, '<--????');
   req.session.destroy((err) => {
     if(err){
       console.log('i am error?');

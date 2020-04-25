@@ -4,26 +4,35 @@ const bcrypt  = require('bcryptjs');
 
 const User = require('../models/user');
 const House  = require('../models/house');
+const Attic  = require('../models/attic');
+const Roof  = require('../models/roof');
+const Water = require('../models/water');
+const Space = require('../models/space');
+
+//EACH USER CAN REGISTER ONLY ONE HOUSE FOR NOW. 
+// router.get('/allhouses', async(req, res) => {
+//     const allHouses = await House.find({});
+//     res.json({
+//       data : allHouses
+//     })
+// });
 
 
-router.get('/allhouses', async(req, res) => {
-  console.log('0');
-    const allHouses = await House.find({});
-    res.json({
-      data : allHouses
-    })
-});
-
-
-//one house
+//one user's house - house details, attics, roof, water heater, space heater
 router.get('/house/:id', async(req, res) => {
   console.log('what is req.params.id? ===>', req.params.id);
   try{
     const foundUser = await User.findById(req.params.id);
-    const foundHouse = await House.findOne({userId: req.params.id})
+    const foundHouse = await House.findOne({userId: req.params.id});
+    const foundRoof = await Roof.findOne({userId: req.params.id});
+    const foundAttic = await Attic.findOne({userId: req.params.id});
+
+
     res.json({
       status: 200,
-      data: foundHouse
+      house: foundHouse,
+      roof: foundRoof,
+      attic: foundAttic,
     })
   }catch(err){
     console.log('fail????');
