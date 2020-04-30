@@ -32,6 +32,10 @@ router.post('/', async(req, res) => {
   const checkUser = await User.findOne({email: req.body.email})
 
   if(checkUser){
+    res.json({
+      status: 400,
+      message: 'this email is already registered'
+    })
     console.log('this email is already registered')
   }else{
   //check if this email is already registered
@@ -39,7 +43,8 @@ router.post('/', async(req, res) => {
   const hashedPassword = await bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
-  const phNumber = req.body.phNumber
+  const phNumber = req.body.phNumber;
+  const emailNotice = req.body.emailNotice;
 
   const UserDbEntry = {};
         UserDbEntry.email     = email;
@@ -47,6 +52,7 @@ router.post('/', async(req, res) => {
         UserDbEntry.firstName = firstName;
         UserDbEntry.lastName  = lastName;
         UserDbEntry.phNumber  = phNumber;
+        UserDbEntry.emailNotice = emailNotice;
 
   try {
     const user = await User.create(UserDbEntry);

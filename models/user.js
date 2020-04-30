@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
     // match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
   },
   password: {type: String},
+  emailNotice: {type: String},
   // house: { type: mongoose.Schema.Types.ObjectId, ref: 'house'},
   userId: {type: String}
 });

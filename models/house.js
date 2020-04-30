@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const houseSchema = mongoose.Schema({
   houseImg: { type: String },
   address: { type : String },
-  city: {type: String}, 
+  city: {type: String},
   state: {type: String},
   zipCode: {type: String},
   houseYear: {type: String},
@@ -13,8 +13,8 @@ const houseSchema = mongoose.Schema({
   numOfStories : {type: String},
   dirOfHouse : {type: String},
   userId: {type: String},
-  postingTime: {type: String},
-  status: {type: String},
+  //postingTime: {type: String},
+  //status: {type: String},
 });
 
 module.exports = mongoose.model('House', houseSchema)
