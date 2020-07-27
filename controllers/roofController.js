@@ -93,7 +93,7 @@ router.post('/', (req, res) => {
         console.log("route.post - error", err)
         res.json(err);
     }else{
-        console.log('NOW CREATING');
+        console.log('NOW CREATING', req.file);
         const createdPost = await Roof.create({
 
           roofImg: `public/uploads/${req.file.filename}`,

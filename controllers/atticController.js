@@ -99,10 +99,10 @@ router.post('/', (req, res) => {
         });
 
         // createdPost.exterior = req.body.exterior;
-        createdPost.roofConstruction = req.body.roofConstruction;
+        // createdPost.roofConstruction = req.body.roofConstruction;
         createdPost.atticType = req.body.atticType;
-        createdPost.atticFloor = req.body.atticFloor;
-        createdPost.roofYear = req.body.roofYear;
+        createdPost.atticSqft = req.body.atticSqft;
+        createdPost.atticDepth = req.body.atticDepth;
         createdPost.insulMaterial = req.body.insulMaterial;
         createdPost.userId = req.body.userId;
 

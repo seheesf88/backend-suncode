@@ -5,7 +5,6 @@ const roofSchema = mongoose.Schema({
   exterior: { type : String },//dropBox
   roofColor: {type: String},
   pvSystem: {type: String},
-  roofYear: {type: String},
   panels: {type: String},
   dcCapacity: {type: String},
   userId: {type: String},
