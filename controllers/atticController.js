@@ -97,13 +97,14 @@ router.post('/', (req, res) => {
 
           atticImg: `public/uploads/${req.file.filename}`,
         });
-
+        console.log('jiji');
         // createdPost.exterior = req.body.exterior;
         // createdPost.roofConstruction = req.body.roofConstruction;
         createdPost.atticType = req.body.atticType;
         createdPost.atticSqft = req.body.atticSqft;
         createdPost.atticDepth = req.body.atticDepth;
         createdPost.insulMaterial = req.body.insulMaterial;
+        createdPost.airSealed = req.body.airSealed;
         createdPost.userId = req.body.userId;
 
 

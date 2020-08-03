@@ -2,13 +2,11 @@ const mongoose = require('mongoose');
 
 const atticSchema = mongoose.Schema({
   atticImg: { type: String },
-  // roofConstruction: { type : String },//dropBox
   atticType: {type: String},
-  // atticFloor: {type: String},
-  // roofYear: {type: String},
   atticSqft: {type: String},
   atticDepth: {type: String},
   insulMaterial: {type: String},
+  airSealed: {type: String},
   userId: {type: String},
 });
 

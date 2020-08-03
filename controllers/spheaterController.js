@@ -22,7 +22,7 @@ const upload = multer({
     console.log('UPLOAD?');
     checkFileType(file, cb)
   }
-}).single('spaceImg'); // name: 'picture' in form
+}).single('spHeaterImg'); // name: 'picture' in form
 
 
 
@@ -48,14 +48,14 @@ function checkFileType(file, cb) { // checks file type,
 //*************** photo ****************
 
 
-const Space  = require('../models/space');
+const SpHeater  = require('../models/spheater');
 const User = require('../models/user');
 
 
 //get all roofs info
 router.get('/', async(req, res) => {
   try{
-    const allSpaces = await Space.find();
+    const allSpaces = await SpHeater.find();
     res.json({
       status: 200,
       data: allSpaces
@@ -70,7 +70,7 @@ router.get('/', async(req, res) => {
 router.get('/:id', async(req, res) =>{
   try{
     const foundUser = await User.findById(req.params.id);
-    const foundSpace = await Space.findOne({userId: req.params.id});
+    const foundSpace = await SpHeater.findOne({userId: req.params.id});
 
     res.json({
       status: 200,
@@ -94,14 +94,17 @@ router.post('/', (req, res) => {
         res.json(err);
     }else{
         console.log('NOW CREATING');
-        const createdPost = await Space.create({
+        const createdPost = await SpHeater.create({
 
           foundSpace: `public/uploads/${req.file.filename}`,
         });
 
         // createdPost.exterior = req.body.exterior;
-        createdPost.spaceYear = req.body.spaceYear;
-        createdPost.spaceType = req.body.spaceType;
+        createdPost.spHeaterType = req.body.spHeaterType;
+        createdPost.atticSqft = req.body.atticSqft;
+        createdPost.spHeaterYear = req.body.spHeaterYear;
+        createdPost.spHeaterCondition = req.body.spHeaterCondition;
+        createdPost.coolingSystem = req.body.coolingSystem;
         createdPost.userId = req.body.userId;
 
 
@@ -117,12 +120,12 @@ router.post('/', (req, res) => {
 
 
 
-//one roof edit
+//one space heater edit
 router.put('/:id', async(req, res) => {
   try{
     const foundUser = await User.findById(req.params.id);
-    const foundSpace = await Roof.findOne({userId: req.params.id})
-    const updatedSpace = await Roof.findByIdAndUpdate(foundSpace._id, req.body, {new: true});
+    const foundSpace = await SpHeater.findOne({userId: req.params.id})
+    const updatedSpace = await SpHeater.findByIdAndUpdate(foundSpace._id, req.body, {new: true});
 
     res.json({
       status: 200,
@@ -134,10 +137,10 @@ router.put('/:id', async(req, res) => {
 });
 
 
-//one roof delete
+//one space heater delete
 router.delete('/:id', async(req, res) => {
   try{
-    const deletedSpace = await Roof.findByIdAndRemove(req.params.id);
+    const deletedSpace = await SpHeater.findByIdAndRemove(req.params.id);
     res.json({
       status: 200,
       data: deletedSpace

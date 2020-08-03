@@ -6,10 +6,10 @@ const User = require('../models/user');
 const House  = require('../models/house');
 const Attic  = require('../models/attic');
 const Roof  = require('../models/roof');
-const Water = require('../models/water');
+const Waheater = require('../models/waheater');
 const Space = require('../models/space');
 
-//EACH USER CAN REGISTER ONLY ONE HOUSE FOR NOW. 
+//EACH USER CAN REGISTER ONLY ONE HOUSE FOR NOW.
 // router.get('/allhouses', async(req, res) => {
 //     const allHouses = await House.find({});
 //     res.json({

@@ -22,7 +22,7 @@ const upload = multer({
     console.log('UPLOAD?');
     checkFileType(file, cb)
   }
-}).single('waterImg'); // name: 'picture' in form
+}).single('waheaterImg'); // name: 'picture' in form
 
 
 
@@ -48,14 +48,14 @@ function checkFileType(file, cb) { // checks file type,
 //*************** photo ****************
 
 
-const Water  = require('../models/water');
+const Waheater  = require('../models/waheater');
 const User = require('../models/user');
 
 
 //get all roofs info
 router.get('/', async(req, res) => {
   try{
-    const allWaters = await Water.find();
+    const allWaters = await Waheater.find();
     res.json({
       status: 200,
       data: allWaters
@@ -70,11 +70,11 @@ router.get('/', async(req, res) => {
 router.get('/:id', async(req, res) =>{
   try{
     const foundUser = await User.findById(req.params.id);
-    const foundWater = await Water.findOne({userId: req.params.id});
+    const foundWaheater = await Waheater.findOne({userId: req.params.id});
 
     res.json({
       status: 200,
-      data: foundWater,
+      data: foundWaheater,
     })
 
 
@@ -94,13 +94,15 @@ router.post('/', (req, res) => {
         res.json(err);
     }else{
         console.log('NOW CREATING');
-        const createdPost = await Water.create({
+        const createdPost = await Waheater.create({
 
-          waterImg: `public/uploads/${req.file.filename}`,
+          waheaterImg: `public/uploads/${req.file.filename}`,
         });
-
-        createdPost.waterYear = req.body.waterYear;
-        createdPost.waterType = req.body.waterType;
+        createdPost.waheaterType = req.body.waheaterType;
+        createdPost.waheaterBrand = req.body.waheaterBrand;
+        createdPost.waheaterYear = req.body.waheaterYear;
+        createdPost.waheaterCondition = req.body.waheaterCondition;
+        createdPost.waheaterSingle = req.body.waheaterSingle;
         createdPost.userId = req.body.userId;
 
 
@@ -120,12 +122,12 @@ router.post('/', (req, res) => {
 router.put('/:id', async(req, res) => {
   try{
     const foundUser = await User.findById(req.params.id);
-    const foundWater = await Water.findOne({userId: req.params.id})
-    const updatedWater = await Water.findByIdAndUpdate(foundWater._id, req.body, {new: true});
+    const foundWaheater = await Waheater.findOne({userId: req.params.id})
+    const updatedWaheater = await Waheater.findByIdAndUpdate(foundWater._id, req.body, {new: true});
 
     res.json({
       status: 200,
-      data: updatedWater
+      data: updatedWaheater
     })
   }catch(err){
     res.send(err)
@@ -136,10 +138,10 @@ router.put('/:id', async(req, res) => {
 //one roof delete
 router.delete('/:id', async(req, res) => {
   try{
-    const deletedWater = await Water.findByIdAndRemove(req.params.id);
+    const deletedWaheater = await Waheater.findByIdAndRemove(req.params.id);
     res.json({
       status: 200,
-      data: deletedWater
+      data: deletedWaheater
     })
 
   }catch(err){
