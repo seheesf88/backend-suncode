@@ -7,7 +7,7 @@ const House  = require('../models/house');
 const Attic  = require('../models/attic');
 const Roof  = require('../models/roof');
 const Waheater = require('../models/waheater');
-const Space = require('../models/space');
+const SpHeater  = require('../models/spheater');
 
 //EACH USER CAN REGISTER ONLY ONE HOUSE FOR NOW.
 // router.get('/allhouses', async(req, res) => {
