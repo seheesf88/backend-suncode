@@ -101,13 +101,13 @@ router.post('/', (req, res) => {
         createdPost.zipCode = req.body.zipCode;
         createdPost.houseYear = req.body.houseYear;
         createdPost.houseSqft = req.body.houseSqft;
-        createdPost.ceilingHeight = req.body.ceilingHeight;
-        createdPost.numOfRooms = req.body.numOfRooms;
-        createdPost.numOfStories = req.body.numOfStories;
-        createdPost.dirOfHouse = req.body.dirOfHouse;
+        // createdPost.ceilingHeight = req.body.ceilingHeight;
+        // createdPost.numOfRooms = req.body.numOfRooms;
+        // createdPost.numOfStories = req.body.numOfStories;
+        // createdPost.dirOfHouse = req.body.dirOfHouse;
 
         createdPost.userId = req.body.userId;
-        createdPost.username = req.body.username;
+        // createdPost.username = req.body.username;
         createdPost.postingTime = req.body.postingTime;
 
         createdPost.save((err, savedPost) => {
