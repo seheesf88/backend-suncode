@@ -11,7 +11,7 @@ const URI = 'mongodb+srv://houseadmin:houseadmin1@cluster0-vjphq.mongodb.net/tes
 const storage = multer.diskStorage({
   destination: './public/uploads/',
   filename: function (req, file, cb) {
-    // console.log('what is file??', file);
+    console.log('what is file??');
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 });
@@ -20,6 +20,7 @@ const upload = multer({
   storage: storage,
   limits: {fileSize: 100000000}, // 1 MB
   fileFilter: function (req, file, cb) {
+    console.log('UPLOAD?');
     checkFileType(file, cb)
   }
 }).single('houseImg'); // name: 'picture' in form
@@ -27,6 +28,7 @@ const upload = multer({
 
 
 function checkFileType(file, cb) { // checks file type,
+  console.log('checking');
   //allowed extensions
   const filetypes = /jpeg|jpg|png|gif/;
   //check ext
@@ -98,7 +100,7 @@ router.post('/', (req, res) => {
         createdPost.address = req.body.address;
         createdPost.city = req.body.city;
         createdPost.state = req.body.state;
-        createdPost.zipCode = req.body.zipCode;
+        createdPost.zipcode = req.body.zipcode;
         createdPost.houseYear = req.body.houseYear;
         createdPost.houseSqft = req.body.houseSqft;
         // createdPost.ceilingHeight = req.body.ceilingHeight;
