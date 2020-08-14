@@ -36,6 +36,7 @@ const roofController = require('./controllers/roofController');
 const atticController = require('./controllers/atticController');
 const waheaterController = require('./controllers/waheaterController');
 const spheaterController = require('./controllers/spheaterController');
+const utilityController = require('./controllers/utilityController');
 
 
 app.use('/api/v1/auth', authController);
@@ -45,6 +46,7 @@ app.use('/api/v1/roof', roofController);
 app.use('/api/v1/attic', atticController);
 app.use('/api/v1/waheater', waheaterController);
 app.use('/api/v1/spheater', spheaterController);
+app.use('/api/v1/utility', utilityController);
 
 
 
