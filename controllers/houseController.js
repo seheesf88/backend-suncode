@@ -94,7 +94,7 @@ router.post('/', (req, res) => {
     }else{
 
         const createdPost = await House.create({
-          houseImg: `public/uploads/${req.file}`,
+          houseImg: `public/uploads/${req.file.filename}`,
         });
         //myCasa 01
         createdPost.address = req.body.address;
