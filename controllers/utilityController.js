@@ -22,7 +22,7 @@ const upload = multer({
     console.log('UPLOAD?');
     checkFileType(file, cb)
   }
-}).single('waheaterImg'); // name: 'picture' in form
+}).single('utilityImg'); // name: 'picture' in form
 
 
 
@@ -122,10 +122,11 @@ router.post('/', (req, res) => {
 
 //one utiltiy edit
 router.put('/:id', async(req, res) => {
+  console.log(req.body);
   try{
     const foundUser = await User.findById(req.params.id);
     const foundUtility = await Utility.findOne({userId: req.params.id})
-    const updatedUtility = await Utility.findByIdAndUpdate(foundWater._id, req.body, {new: true});
+    const updatedUtility = await Utility.findByIdAndUpdate(foundUtility._id, req.body, {new: true});
 
     res.json({
       status: 200,

@@ -126,20 +126,52 @@ router.post('/', (req, res) => {
 
 
 //house edit
-router.put('/:id', async(req, res) => {
-  try{
+
+router.put('/:id', (req, res) => {
+upload(req, res, async(err) =>{
+  if(err){
+    console.log('its err');
+  }else{
+
     const foundUser = await User.findById(req.params.id);
     const foundHouse = await House.findOne({userId: req.params.id})
-    console.log('foundhouse', foundHouse);
+    console.log('foundhouse', req.body.houseImg);
     const updatedHouse = await House.findByIdAndUpdate(foundHouse._id, req.body, {new: true});
+    // const newhouseImg= `public/uploads/${req.file.filename}`
+    // const updatedHouseImg = await House.findByIdAndUpdate(foundHouse._id, newhouseImg, {new:true});
+
     res.json({
       status: 200,
       data: updatedHouse
-    })
-  }catch(err){
-    res.send(err)
+        })
+
   }
+
+  })
+
+
+
 });
+
+
+
+
+
+
+// router.put('/:id', async(req, res) => {
+//   try{
+//     const foundUser = await User.findById(req.params.id);
+//     const foundHouse = await House.findOne({userId: req.params.id})
+//     console.log('foundhouse', req.body);
+//     const updatedHouse = await House.findByIdAndUpdate(foundHouse._id, req.body, {new: true});
+//     res.json({
+//       status: 200,
+//       data: updatedHouse
+//     })
+//   }catch(err){
+//     res.send(err)
+//   }
+// });
 
 
 //house delete
