@@ -52,7 +52,6 @@ const SpHeater  = require('../models/spheater');
 const User = require('../models/user');
 
 
-//get all roofs info
 router.get('/', async(req, res) => {
   try{
     const allSpaces = await SpHeater.find();
@@ -66,7 +65,7 @@ router.get('/', async(req, res) => {
 
 });
 
-//get one roof by id
+
 router.get('/:id', async(req, res) =>{
   try{
     const foundUser = await User.findById(req.params.id);
@@ -85,18 +84,18 @@ router.get('/:id', async(req, res) =>{
 
 });
 
-//posting one roof
+
 router.post('/', (req, res) => {
 
   upload(req, res,  async (err) => {
     if (err){
-        console.log("route.post - error", err)
+        // console.log("route.post - error", err)
         res.json(err);
     }else{
-        console.log('NOW CREATING');
+        // console.log('NOW CREATING');
         const createdPost = await SpHeater.create({
 
-          foundSpace: `public/uploads/${req.file.filename}`,
+          spHeaterImg : `public/uploads/${req.file.filename}`,
         });
 
         // createdPost.exterior = req.body.exterior;
