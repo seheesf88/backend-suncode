@@ -11,7 +11,7 @@ const URI = 'mongodb+srv://houseadmin:houseadmin1@cluster0-vjphq.mongodb.net/tes
 const storage = multer.diskStorage({
   destination: './public/uploads/',
   filename: function (req, file, cb) {
-    console.log('what is file??');
+    console.log('what is file??', file);
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 });
@@ -28,7 +28,7 @@ const upload = multer({
 
 
 function checkFileType(file, cb) { // checks file type,
-  console.log('checking');
+
   //allowed extensions
   const filetypes = /jpeg|jpg|png|gif/;
   //check ext
@@ -37,6 +37,7 @@ function checkFileType(file, cb) { // checks file type,
   const mimetype = filetypes.test(file.mimetype);
 
   if (mimetype && extname) {
+    console.log('checking');
     return cb(null, true);
   } else {
     cb('Error: Images only!');
@@ -92,7 +93,7 @@ router.post('/', (req, res) => {
         console.log("route.post - error", err)
         res.json(err);
     }else{
-
+        console.log('post-req.body', req.body);
         const createdPost = await House.create({
           houseImg: `public/uploads/${req.file.filename}`,
         });
@@ -128,14 +129,15 @@ router.post('/', (req, res) => {
 //house edit
 
 router.put('/:id', (req, res) => {
+  console.log('--', req.body);
 upload(req, res, async(err) =>{
   if(err){
-    console.log('its err');
+    console.log('its err', err);
   }else{
-
+    console.log('foundhouse', req.body);
     const foundUser = await User.findById(req.params.id);
     const foundHouse = await House.findOne({userId: req.params.id})
-    console.log('foundhouse', req.body.houseImg);
+
     const updatedHouse = await House.findByIdAndUpdate(foundHouse._id, req.body, {new: true});
     // const newhouseImg= `public/uploads/${req.file.filename}`
     // const updatedHouseImg = await House.findByIdAndUpdate(foundHouse._id, newhouseImg, {new:true});
