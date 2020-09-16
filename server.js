@@ -18,7 +18,8 @@ app.use(bodyParser.json());
 
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:3000', 'https://react-suncode.herokuapp.com/'],
+  origin: ['http://localhost:3000', 'http://localhost:3000', 'https://react-suncode.herokuapp.com/',
+'https://www.react-suncode.herokuapp.com/', 'http://react-suncode.herokuapp.com/'],
   credentials: true,
   optionsSuccessStatus:200
 }
