@@ -6,7 +6,8 @@ const URI = 'mongodb+srv://houseadmin:houseadmin1@cluster0-vjphq.mongodb.net/tes
 mongoose.connect( URI || process.env.MONGODB_URI || connectionString, {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useNewUrlParser: true
 });
 
 mongoose.connection.on('connected', () => {
