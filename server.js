@@ -3,7 +3,7 @@ const app     = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
-// const multer = require('multer')
+
 require('./db/db');
 
 app.use(session({
@@ -22,18 +22,6 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus:200
 }
-
-// var whitelist = ['http://localhost:3000', 'http://localhost:3000', 'https://react-suncode.herokuapp.com', 'http://react-suncode.herokuapp.com/']
-//
-// var corsOptions = {
-//   origin: function (origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true)
-//     } else {
-//       callback(new Error('Not allowed by CORS'))
-//     }
-//   }
-// }
 
 
 app.use(cors(corsOptions));

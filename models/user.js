@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {type: String},
   emailNotice: {type: String},
-  // house: { type: mongoose.Schema.Types.ObjectId, ref: 'house'},
+  mobileNotice : {type: String},
   userId: {type: String}
 });
 
