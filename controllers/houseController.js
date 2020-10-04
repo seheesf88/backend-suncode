@@ -93,26 +93,9 @@ router.post('/', (req, res) => {
         console.log("route.post - error", err)
         res.json(err);
     }else{
-        console.log('post-req.body', req.body);
-        const createdPost = await House.create({
-          houseImg: `public/uploads/${req.file.filename}`,
-        });
-        //myCasa 01
-        createdPost.address = req.body.address;
-        createdPost.city = req.body.city;
-        createdPost.state = req.body.state;
-        createdPost.zipcode = req.body.zipcode;
-        createdPost.houseYear = req.body.houseYear;
-        createdPost.houseSqft = req.body.houseSqft;
-        // createdPost.ceilingHeight = req.body.ceilingHeight;
-        // createdPost.numOfRooms = req.body.numOfRooms;
-        // createdPost.numOfStories = req.body.numOfStories;
-        // createdPost.dirOfHouse = req.body.dirOfHouse;
+        // console.log('post-req.body', req.body);
 
-        createdPost.userId = req.body.userId;
-        // createdPost.username = req.body.username;
-        createdPost.postingTime = req.body.postingTime;
-
+        const createdPost = await House.create(makeHouseFromBody(req.body, req.file.filename))
         createdPost.save((err, savedPost) => {
           res.json({
             msg: 'file uploaded',
@@ -124,6 +107,18 @@ router.post('/', (req, res) => {
 });
 
 
+function makeHouseFromBody(body, filename){
+  return {
+      houseImg: `public/uploads/${filename}`,
+      address: body.address,
+      city: body.city,
+      state: body.state,
+      zipcode: body.zipcode,
+      houseYear: body.houseYear,
+      houseSqft: body.houseSqft,
+      userId: body.userId
+  }
+}
 
 
 //house edit
@@ -134,11 +129,10 @@ upload(req, res, async(err) =>{
   if(err){
     console.log('its err', err);
   }else{
-    console.log('foundhouse', req.body);
-    const foundUser = await User.findById(req.params.id);
+    const example = makeHouseFromBody(req.body, req.file.filename);
+    //const foundUser = await User.findById(req.params.id); why did you do sehee think..??
     const foundHouse = await House.findOne({userId: req.params.id})
-
-    const updatedHouse = await House.findByIdAndUpdate(foundHouse._id, req.body, {new: true});
+    const updatedHouse = await House.findByIdAndUpdate(foundHouse._id, example, {new: true});
     // const newhouseImg= `public/uploads/${req.file.filename}`
     // const updatedHouseImg = await House.findByIdAndUpdate(foundHouse._id, newhouseImg, {new:true});
 
