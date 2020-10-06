@@ -23,17 +23,11 @@ const upload = multer({
     console.log('UPLOAD?');
     checkFileType(file, cb)
   }
-}).single('houseImg'); // name: 'picture' in form
-// }).array('photo', 4); // name: 'picture' in form
+}).single('houseImg');
 
-
-function checkFileType(file, cb) { // checks file type,
-
-  //allowed extensions
+function checkFileType(file, cb) {
   const filetypes = /jpeg|jpg|png|gif/;
-  //check ext
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  // check mime type
   const mimetype = filetypes.test(file.mimetype);
 
   if (mimetype && extname) {
@@ -93,8 +87,7 @@ router.post('/', (req, res) => {
         console.log("route.post - error", err)
         res.json(err);
     }else{
-        // console.log('post-req.body', req.body);
-
+        console.log('post-req.body', req.body);
         const createdPost = await House.create(makeHouseFromBody(req.body, req.file.filename))
         createdPost.save((err, savedPost) => {
           res.json({
@@ -124,24 +117,23 @@ function makeHouseFromBody(body, filename){
 //house edit
 
 router.put('/:id', (req, res) => {
-  console.log('--', req.body);
-upload(req, res, async(err) =>{
-  if(err){
-    console.log('its err', err);
-  }else{
-    const example = makeHouseFromBody(req.body, req.file.filename);
-    //const foundUser = await User.findById(req.params.id); why did you do sehee think..??
-    const foundHouse = await House.findOne({userId: req.params.id})
-    const updatedHouse = await House.findByIdAndUpdate(foundHouse._id, example, {new: true});
-    // const newhouseImg= `public/uploads/${req.file.filename}`
-    // const updatedHouseImg = await House.findByIdAndUpdate(foundHouse._id, newhouseImg, {new:true});
+  upload(req, res, async(err) =>{
+    if(err){
+      console.log('its err', err);
+    }else{
+      const example = makeHouseFromBody(req.body, req.file.filename);
+      //const foundUser = await User.findById(req.params.id); why did you do sehee think..??
+      const foundHouse = await House.findOne({userId: req.params.id})
+      const updatedHouse = await House.findByIdAndUpdate(foundHouse._id, example, {new: true});
+      // const newhouseImg= `public/uploads/${req.file.filename}`
+      // const updatedHouseImg = await House.findByIdAndUpdate(foundHouse._id, newhouseImg, {new:true});
 
-    res.json({
-      status: 200,
-      data: updatedHouse
-        })
+      res.json({
+        status: 200,
+        data: updatedHouse
+          })
 
-  }
+    }
 
   })
 
